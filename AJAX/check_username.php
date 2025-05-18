@@ -1,5 +1,3 @@
-database
- 
 <?php
 require_once('../classes/database.php');
 $con = new database();
@@ -11,4 +9,3 @@ if (isset($_POST['username'])) {
         echo json_encode(['error' => 'invalid request']);
     }
 }
- 
