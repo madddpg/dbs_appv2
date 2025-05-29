@@ -43,6 +43,21 @@ class database {
         $count = $stmt->fetchColumn();
         return $count > 0;
         }
+
+
+       function loginUser($username, $password) {
+        $con = $this->opencon(); 
+        $stmt = $con->prepare("SELECT * FROM Admin WHERE admin_username = ?");
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($password, $user['admin_password'])) {
+        return $user;
+    } else {
+        return false;
+    }
+}
+
 }
 
  
