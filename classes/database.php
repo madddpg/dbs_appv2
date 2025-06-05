@@ -88,7 +88,7 @@ class database {
         }
 
         
-          function addCourse($course_name, $admin_id) {
+        function addCourse($course_name, $admin_id) {
         $con = $this->opencon();
  
         try {
@@ -105,13 +105,65 @@ class database {
             $con->rollBack();
             return false;
         }
-
-
-        
     }
 
-    
+        function getStudents(){
+            $con = $this->opencon();
+            return $con->query("SELECT * FROM students")->fetchAll();
+        }
 
+
+        function getStudentByID($students_id){
+            $con =  $this->opencon();
+            $stmt = $con->prepare("SELECT * FROM students WHERE student_id = ?");
+            $stmt->execute([$students_id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+
+        function updateStudents($id, $fn, $ln, $email) {
+        try {
+            $con = $this->opencon();
+            $con->beginTransaction();
+            $query = $con->prepare("UPDATE students SET  student_FN=?, student_LN=?, student_email=? WHERE student_id=?");
+            $query->execute([$fn,$ln,$email,$id]);
+            $con->commit();
+            return true;
+        } catch (PDOException $e) {
+            $con->rollBack();
+            return false;
+        }
+    }
+        
+         function getCourse(){
+            $con = $this->opencon();
+            return $con->query("SELECT * FROM courses")->fetchAll();
+        }
+
+
+        function getCourseByID($course_id){
+            $con =  $this->opencon();
+            $stmt = $con->prepare("SELECT * FROM courses WHERE course_id = ?");
+            $stmt->execute([$course_id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+
+        function updateCourses($course_id, $course_name) {
+        try {
+            $con = $this->opencon();
+            $con->beginTransaction();
+            $query = $con->prepare("UPDATE courses SET  course_name=? WHERE course_id=?");
+            $query->execute([$course_name,$course_id]);
+            $con->commit();
+            return true;
+        } catch (PDOException $e) {
+            $con->rollBack();
+            return false;
+        }
+    }
+      
+    
 }
 
  

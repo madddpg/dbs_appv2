@@ -104,21 +104,32 @@
           <th>ID</th>
           <th>Full Name</th>
           <th>Email</th>
-          <th>Course</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
+     <?php
+      $students = $con->getStudents();
+      foreach($students as $student){
+      ?>
         <tr>
-          <td>1</td>
-          <td>Jei Q. Pastrana</td>
-          <td>jei@example.com</td>
-          <td>DIT</td>
+          <td><?php echo $student['student_id']?></td>
+          <td><?php echo $student['student_FN'] . ' '. $student['student_LN']?></td>
+          <td><?php echo $student['student_email']?></td>
           <td>
-            <button class="btn btn-sm btn-warning">Edit</button>
+
+          <div class="btn-group" role= "group">
+            <form action = "update_student.php" method="POST">
+              <input type="hidden" name="students_id" value = "<?php echo $student ['student_id']?>">
+              <button type="submit" class="btn btn-sm btn-warning">Edit</button>
+            </form>
+            </div>
             <button class="btn btn-sm btn-danger">Delete</button>
           </td>
         </tr>
+      <?php
+      }
+      ?>
       </tbody>
     </table>
 
@@ -133,14 +144,27 @@
         </tr>
       </thead>
       <tbody>
+        <?php
+      $course = $con->getCourse();
+      foreach($course as $course){
+      ?>
         <tr>
-          <td>1</td>
-          <td>BS Information Technology</td>
+          <td><?php echo $course['course_id']?></td>
+          <td><?php echo $course['course_name']?></td>
           <td>
-            <button class="btn btn-sm btn-warning">Edit</button>
+
+          <div class="btn-group" role= "group">
+            <form action = "update_courses.php" method="POST">
+              <input type="hidden" name="course_id" value = "<?php echo $course['course_id']?>">
+              <button type="submit" class="btn btn-sm btn-warning">Edit</button>
+            </form>
+            </div>
             <button class="btn btn-sm btn-danger">Delete</button>
           </td>
         </tr>
+        <?php
+      }
+        ?>
       </tbody>
     </table>
 
@@ -207,7 +231,7 @@
           <div class="invalid-feedback">Course already taken.</div>
         </div>
         <div class="modal-footer">
-          <button type="submit" id = "addcourse"name = "add_course">Add Course</button>
+          <button type="submit" id = "addcourse" name = "add_course">Add Course</button>
         </div>
       </form>
     </div>
